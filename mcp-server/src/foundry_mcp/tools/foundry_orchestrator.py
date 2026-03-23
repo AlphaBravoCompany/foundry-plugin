@@ -158,9 +158,16 @@ def foundry_gate(
         teams_result = _check_active_teams(project_root)
         if teams_result["active"]:
             passed = False
-            reason = f"Active teams: {', '.join(teams_result['teams'])}"
-            hint = "Shut down all teammates and call Foundry-Team-Down for each"
-            checklist.append({"check": "no_active_teams", "ok": False, "teams": teams_result["teams"]})
+            parts = []
+            if teams_result["teams"]:
+                parts.append(f"Team dirs: {', '.join(teams_result['teams'])}")
+            if teams_result.get("live_panes"):
+                parts.append(f"Live panes: {', '.join(teams_result['live_panes'])}")
+            reason = f"Active teammates: {'; '.join(parts)}"
+            hint = teams_result.get("hint", "Shut down all teammates, call TeamDelete, then Foundry-Team-Down")
+            checklist.append({"check": "no_active_teams", "ok": False,
+                            "teams": teams_result["teams"],
+                            "live_panes": teams_result.get("live_panes", [])})
         else:
             checklist.append({"check": "no_active_teams", "ok": True})
 
@@ -185,9 +192,15 @@ def foundry_gate(
         teams_result = _check_active_teams(project_root)
         if teams_result["active"]:
             passed = False
-            reason = f"Active teams: {', '.join(teams_result['teams'])}"
-            hint = "Shut down INSPECT teams first"
-        checklist.append({"check": "no_active_teams", "ok": not teams_result["active"]})
+            parts = []
+            if teams_result["teams"]:
+                parts.append(f"Team dirs: {', '.join(teams_result['teams'])}")
+            if teams_result.get("live_panes"):
+                parts.append(f"Live panes: {', '.join(teams_result['live_panes'])}")
+            reason = f"Active teammates: {'; '.join(parts)}"
+            hint = teams_result.get("hint", "Shut down INSPECT teams first")
+        checklist.append({"check": "no_active_teams", "ok": not teams_result["active"],
+                         "live_panes": teams_result.get("live_panes", [])})
 
         if not (fdir / ".tasks-generated").exists():
             passed = False
@@ -673,17 +686,41 @@ def _kill_panes(panes: list[tuple[str, str, str]]) -> int:
 
 
 def _check_active_teams(project_root: str) -> dict:
-    """Check if any registered teams still have directories."""
+    """Check if any registered teams still have directories OR live tmux panes.
+
+    Two-layer check:
+    1. Team directory exists in ~/.claude/teams/ (TeamDelete wasn't called)
+    2. Live teammate tmux panes exist (teammates haven't exited yet)
+
+    BOTH must be clear for the gate to pass. This prevents the lead from
+    progressing to the next phase while teammates are still running.
+    """
     fdir = get_run_dir(project_root)
     if not fdir:
-        return {"active": False, "teams": []}
+        return {"active": False, "teams": [], "live_panes": []}
     state = _load_json(fdir / "state.json")
     teams = state.get("active_teams", [])
 
     teams_dir = Path.home() / ".claude" / "teams"
     active = [t for t in teams if (teams_dir / t).is_dir()]
 
-    return {"active": len(active) > 0, "teams": active}
+    # Also check for live teammate tmux panes — even if TeamDelete was called,
+    # the claude processes might still be running
+    live_panes = []
+    scan = _scan_tmux_panes()
+    if scan["available"] and scan["live"]:
+        live_panes = [title for _, title, _ in scan["live"]]
+
+    is_active = len(active) > 0 or len(live_panes) > 0
+
+    result: dict = {"active": is_active, "teams": active, "live_panes": live_panes}
+    if live_panes and not active:
+        result["hint"] = (
+            f"{len(live_panes)} teammate pane(s) still running: {', '.join(live_panes)}. "
+            "Send 'All work complete, stop working.' to each teammate and wait for them to exit. "
+            "If they won't stop, run: tmux kill-pane -t <pane_id>"
+        )
+    return result
 
 
 def foundry_register_team(
