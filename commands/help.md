@@ -44,14 +44,14 @@ F0: DECOMPOSE → F1: CAST → F2: INSPECT → F3: GRIND → F4: ASSAY → F5: T
 
 ## Available Commands
 
-### /foundry:plan \<SCOPE\> [OPTIONS]
+### /foundry:start \<SCOPE\> [OPTIONS]
 
 Start a new foundry run.
 
 ```
-/foundry:plan "user auth" --spec docs/specs/auth.md
-/foundry:plan "dashboard" --spec docs/specs/dashboard.md --url http://localhost:3000
-/foundry:plan "api" --spec docs/specs/api.md --temper
+/foundry:start "user auth" --spec docs/specs/auth.md
+/foundry:start "dashboard" --spec docs/specs/dashboard.md --url http://localhost:3000
+/foundry:start "api" --spec docs/specs/api.md --temper
 ```
 
 **Options:**
@@ -95,7 +95,7 @@ Run `/foundry:setup` once per machine to install:
 
 ```
 1. Forge plans:    /forge:plan "my feature"
-2. Foundry builds: /foundry:plan "my feature" --spec docs/specs/my-feature.md
+2. Foundry builds: /foundry:start "my feature" --spec docs/specs/my-feature.md
 ```
 
 ## Key Properties

@@ -34,7 +34,7 @@ Foundry — Build-Verify-Fix Loop
 Forge plans. Foundry builds.
 
 USAGE:
-  /foundry:plan <SCOPE> [OPTIONS]
+  /foundry:start <SCOPE> [OPTIONS]
   /foundry:resume
   /foundry:status
   /foundry:stop
@@ -63,14 +63,14 @@ PHASES:
   F6: DONE       — Report and archive
 
 EXAMPLES:
-  /foundry:plan "user authentication" --spec docs/specs/auth.md
-  /foundry:plan "dashboard redesign" --spec docs/specs/dashboard.md --url http://localhost:3000
-  /foundry:plan "api improvements" --spec docs/specs/api.md --temper
-  /foundry:plan "quick fix" --no-ui --max-cycles 2
+  /foundry:start "user authentication" --spec docs/specs/auth.md
+  /foundry:start "dashboard redesign" --spec docs/specs/dashboard.md --url http://localhost:3000
+  /foundry:start "api improvements" --spec docs/specs/api.md --temper
+  /foundry:start "quick fix" --no-ui --max-cycles 2
 
 WORKFLOW:
   1. Forge plans:    /forge:plan "my feature"
-  2. Foundry builds: /foundry:plan "my feature" --spec docs/specs/my-feature.md
+  2. Foundry builds: /foundry:start "my feature" --spec docs/specs/my-feature.md
 
   Forge plans. Foundry builds.
 HELP_EOF
@@ -127,7 +127,7 @@ done
 if [[ -z "$SCOPE" ]]; then
   echo "Error: Scope description is required" >&2
   echo "" >&2
-  echo "   Example: /foundry:plan \"user authentication\" --spec docs/specs/auth.md" >&2
+  echo "   Example: /foundry:start \"user authentication\" --spec docs/specs/auth.md" >&2
   exit 1
 fi
 

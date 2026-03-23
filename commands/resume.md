@@ -26,7 +26,7 @@ Tell the user:
 >
 > To start a new run:
 > ```
-> /foundry:plan "scope" --spec path/to/spec.md
+> /foundry:start "scope" --spec path/to/spec.md
 > ```
 
 Then STOP.
@@ -51,4 +51,4 @@ Present the list using AskUserQuestion:
 3. Call `Foundry-Next` to get the next action
 4. Continue the foundry loop from the current phase
 
-Follow the same rules as `/foundry:plan` — you are the Lead, never edit code, delegate everything.
+Follow the same rules as `/foundry:start` — you are the Lead, never edit code, delegate everything.

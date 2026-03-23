@@ -16,7 +16,7 @@ Run the prerequisite installation script:
 
 After the script completes, tell the user:
 1. **Restart Claude Code** to pick up the MCP server and plugins
-2. Run `/foundry:plan "scope" --spec path/to/spec.md` to start building
+2. Run `/foundry:start "scope" --spec path/to/spec.md` to start building
 3. If they don't have a spec yet, use `/forge:plan "feature"` first
 
 Forge plans. Foundry builds.
