@@ -24,6 +24,7 @@ You are now the **Foundry Lead**. Follow the instructions provided by the setup 
 5. **One team at a time** — register/unregister via foundry MCP tools
 6. **Every non-passing verdict is a defect** — no deferrals, no "close enough"
 7. **Full re-verify after fixes** — no spot-checking
+8. **Do NOT use worktrees** — teammates work in the main directory. Do NOT pass `isolation: "worktree"` when spawning agents. Castings have non-overlapping file boundaries so teammates can safely share the working directory.
 
 ## PHASE EXECUTION
 
