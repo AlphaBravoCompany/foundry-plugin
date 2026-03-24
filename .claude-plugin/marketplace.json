@@ -11,7 +11,7 @@
       "name": "foundry",
       "source": "./",
       "description": "Autonomous build-verify-fix loop with 4-stream verification. Forge plans. Foundry builds.",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "author": {
         "name": "Codsworth"
       }
