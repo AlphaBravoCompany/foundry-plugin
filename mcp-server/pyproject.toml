@@ -1,6 +1,6 @@
 [project]
 name = "foundry-mcp"
-version = "1.0.0"
+version = "1.1.0"
 description = "MCP server for the Foundry build-verify-fix loop. Phase gates, defect tracking, verification orchestration."
 requires-python = ">=3.11"
 dependencies = ["mcp>=1.0.0", "jsonschema>=4.20.0"]

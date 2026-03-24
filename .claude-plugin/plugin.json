@@ -1,7 +1,7 @@
 {
   "name": "foundry",
   "description": "Build-verify-fix loop for Claude Code. Autonomous code generation with 4-stream verification (TRACE, PROVE, SIGHT, TEST), defect grinding, and spec-before-code assay. Forge plans. Foundry builds.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": {
     "name": "Codsworth"
   }
